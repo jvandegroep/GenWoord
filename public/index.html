@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Generate Word</title>
+
+    <!-- load local jquery file -->
+    <script src="./src/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- local js files -->
+    <script src="./js/process.js"></script>
+    <script src="./js/xhttp.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+
+  </head>
+  <body>
+
+    <div class="jumbotron-fluid">
+        <h1 class="display-3">Generate Words</h1>
+        <p class="lead">We only need your characters!</p>
+        <hr class="my-4">
+        <p>Please provide word length and number of available characters.</p>
+    </div>
+
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <br>
+          <p>Length of word to generate:</p>
+          <div class="btn-group" data-toggle="buttons" id="wordLength">
+            <label class="btn btn-primary">
+              <input type="radio" name="options" id="option2" value="2" autocomplete="off" > 2
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="options" id="option3" value="3" autocomplete="off" > 3
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="options" id="option4" value="4" autocomplete="off" > 4
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="options" id="option5" value="5" autocomplete="off" > 5
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="options" id="option6" value="6" autocomplete="off" > 6
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="options" id="option7" value="7" autocomplete="off"> 7
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="options" id="option8" value="8" autocomplete="off"> 8
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="options" id="option9" value="9" autocomplete="off"> 9
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="options" id="option10" value="10" autocomplete="off"> 10
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div id="numCharDiv">
+            <br>
+            <p>Number of characters available:</p>
+            <div class="btn-group" data-toggle="buttons" id="numChar">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div id="charactersDiv">
+            <br>
+            <p>Available characters:</p>
+            <div class="input-group" id="inputDiv">
+            </div>
+            <br>
+            <br>
+            <button id="button" class="btn btn-secondary" type="button" onclick="libraryCheck()" name="button">Generate!</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <br><br>
+          <div class="progress" id="progressDiv">
+            <div class="progress-bar progress-bar-striped active" role="progressbar"
+            aria-valuemin="0" aria-valuemax="100" style="width:0%">
+              0%
+            </div>
+          </div>
+          <div id="outputDiv">
+            <br>
+            <h4>Possible words</h4>
+            <div class="table table-inverse">
+              <table class="table-striped" id="outputTable"></table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+</html>
