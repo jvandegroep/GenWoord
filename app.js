@@ -2,15 +2,16 @@ var express = require('express');
 
 var index = require('./routes/index');
 var loadDic = require('./routes/loadDic');
+var checkWoord = require('./routes/checkWoord');
 
 var app = express();
 
 // go directly to ./public and finds index.html
 app.use(express.static(__dirname + '/public'));
 
-// when url path includes /calc then go to loadDic (./routes/loadDic)
+// when url path includes /blah then go to blah route (./routes/blah)
 app.use('/loadDic', loadDic);
-
+app.use('/checkWoord', checkWoord);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

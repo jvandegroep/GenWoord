@@ -14,18 +14,18 @@ router.get('/', function(req, res, next) {
   if (req.query.lang == '') {
     console.log("unknown dictionary file, please specify language");
     res.writeHead(400, {'Content-Type': 'text/html'});
-    res.write("no dictionary file specified")
-    res.end()
+    res.write("no dictionary file specified");
+    res.end();
   } else {
 
-    var dicFile = './bin/dics/dutch/OpenTaal-210G-basis-gekeurd.txt'
+    var dicFile = './bin/dics/dutch/OpenTaal-210G-basis-gekeurd.txt';
 
     fs.readFile(dicFile, "utf8", function(err, data){
       if(err) {
         console.log('error loading file', dicFile);
         res.writeHead(400, {'Content-Type': 'text/html'});
-        res.write("error loading the file", dicFile)
-        res.end()
+        res.write("error loading the file", dicFile);
+        res.end();
       } else {
 
         console.log('File',dicFile + ' loaded!');
@@ -35,15 +35,15 @@ router.get('/', function(req, res, next) {
         var libraryArray = [];
 
         for (var i=0; i<allTextLines.length; i++) {
-            var data = allTextLines[i].split(';');
-                var tarr = [];
+          data = allTextLines[i].split(';');
+          var tarr = [];
 
-                for (var j=0; j<data.length; j++) {
+          for (var j=0; j<data.length; j++) {
 
-                    tarr.push(data[j].toUpperCase());
+            tarr.push(data[j].toUpperCase());
+          }
 
-                }
-                libraryArray.push(tarr);
+        libraryArray.push(tarr);
         }
 
         // trow back the data that was read
