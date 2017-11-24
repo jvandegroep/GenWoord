@@ -52,7 +52,7 @@ function createCharFields(num) {
     var inputs = $(this).closest('.input-group').find(':input');
     // get your keyed up input field and focus to next.
     inputs.eq( inputs.index(this)+ 1 ).focus().select();
-  })
+  });
 }
 
 
@@ -152,7 +152,7 @@ function checkWoord() {
       document.getElementById('outputDiv').style.display = 'block';
       document.getElementById('progressDiv').style.display = 'none';
     }
-  })
+  });
 }
 
 
@@ -167,13 +167,13 @@ $(document).ready(function() {
 
     //get value of selected radio button
     createCharAvailableRadio($('input[name=options]:checked').val());
-  })
+  });
 
   //Load on section made at id numChar
   $('#numChar').change(function() {
 
     //get value of selected options
     createCharFields($('input[name=options2]:checked').val());
-  })
+  });
 
-})
+});

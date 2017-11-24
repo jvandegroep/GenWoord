@@ -98,9 +98,9 @@ router.get('/', function(req, res, next) {
         libraryIndex[combi].forEach(function(sw){
 
           result.push(sw);
-        })
+        });
       }
-    })
+    });
 
     // send back the result (array)
     res.send(result);
