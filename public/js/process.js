@@ -1,3 +1,47 @@
+// get the input values
+function inputChars(){
+
+  // get number of elements in the inputDiv fields
+  var elementCount = document.getElementById('inputDiv').children.length;
+
+  var inputStr = "";
+
+  //get get values from field ID's
+  for (k=0; k < elementCount; k++){
+
+    var InputValue = document.getElementById(k).value;
+
+    // check if all field are filled in
+    if (!InputValue) { alert('please fill in all character fields'); return; }
+
+    //push value to inputStr
+    inputStr += InputValue;
+  }
+
+  return inputStr;
+}
+
+
+// check characters with library
+function checkWoord() {
+
+  //URL variables
+  var HREF = window.location.href;
+  var lang = 'dutch';
+  var charSearch = inputChars();
+  var wordLength = $('input[name=options]:checked').val();
+
+  //create URL
+  var URL = HREF + "checkWoord?lang=" + lang + "&charSearch=" + charSearch + "&wordLength=" + wordLength;
+
+  //load dictionary file
+  httpData(URL,'GET',"", function(res){
+
+    console.log("checkWoord responsee: ", res);
+  })
+}
+
+
 // Generate characters available
 function charAvailableSelect(num) {
 
@@ -56,7 +100,7 @@ function wordChars(num) {
     var inputs = $(this).closest('.input-group').find(':input');
     // get your keyed up input field and focus to next.
     inputs.eq( inputs.index(this)+ 1 ).focus();
-  });
+  })
 }
 
 
@@ -224,7 +268,7 @@ function libraryCheck() {
     } else {
       alert("No library file was uploaded, or the file is empty!");
     }
-  });
+  })
 }
 
 
@@ -236,15 +280,13 @@ $(document).ready(function() {
 
     //get value of selected options
     charAvailableSelect($('input[name=options]:checked').val());
-  });
+  })
 
   //Load on section made at id numChar
   $('#numChar').change(function() {
 
     //get value of selected options
     wordChars($('input[name=options2]:checked').val());
-  });
+  })
 
-
-
-});
+})

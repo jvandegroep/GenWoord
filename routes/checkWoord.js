@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 
+//const charSearch = "";
+//const wordLength = "";
+
 /* GET checkWoord page */
 router.get('/', function(req, res, next) {
 
@@ -13,9 +16,10 @@ router.get('/', function(req, res, next) {
   console.log('original URL:', fullUrl);
   console.log('query:',req.query);
 
-  const charSearch = req.query.charSearch;
+  var charSearch = req.query.charSearch;
+  console.log("debug1 - charSearch: ", charSearch);
   var lang = req.query.lang;
-  const wordLength = req.query.wordLength;
+  var wordLength = req.query.wordLength;
 
 
   //check input
@@ -62,6 +66,7 @@ router.get('/', function(req, res, next) {
     });
 
     //split and sort the incoming characters
+    console.log("debug2 - charSearch: ", charSearch)
     var sortChars = charSearch.split("").sort(); //"abcdef"
     var charLen = sortChars.length;
 
