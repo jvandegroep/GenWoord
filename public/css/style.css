@@ -35,3 +35,7 @@ td {
 #progressDiv {
   display: none;
 }
+
+#noResult {
+  display: none;
+}

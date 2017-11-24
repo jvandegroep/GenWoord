@@ -1,53 +1,5 @@
-// get the input values
-function inputChars(){
-
-  // get number of elements in the inputDiv fields
-  var elementCount = document.getElementById('inputDiv').children.length;
-
-  var inputStr = "";
-
-  //get get values from field ID's
-  for (k=0; k < elementCount; k++){
-
-    var InputValue = document.getElementById(k).value;
-
-    // check if all field are filled in
-    if (!InputValue) { alert('please fill in all character fields'); return; }
-
-    //push value to inputStr
-    inputStr += InputValue;
-  }
-
-  return inputStr;
-}
-
-
-// check characters with library
-function checkWoord() {
-
-  //URL variables
-  var HREF = window.location.href;
-  var lang = 'dutch';
-  var charSearch = inputChars();
-  var wordLength = $('input[name=options]:checked').val();
-
-  //create URL
-  var URL = HREF + "checkWoord?lang=" + lang + "&charSearch=" + charSearch + "&wordLength=" + wordLength;
-
-  //load dictionary file
-  httpData(URL,'GET',"", function(res){
-
-    console.log("checkWoord response: ", res);
-  })
-}
-
-
-// Generate characters available
-function charAvailableSelect(num) {
-
-  if (num == ""){
-    num = 4;
-  }
+// Create characters available radio buttons
+function createCharAvailableRadio(num) {
 
   //create options based on length of the word and available characters
   var maxChars = 11;
@@ -76,12 +28,12 @@ function charAvailableSelect(num) {
 
 
 //Create input field on choice of number of characters
-function wordChars(num) {
+function createCharFields(num) {
 
   //get getElementById
   var inputDiv = document.getElementById('inputDiv');
 
-  //empty inputDiv
+  //empty inputDiv (input fields)
   inputDiv.innerHTML = "";
 
   //create input fields
@@ -99,85 +51,8 @@ function wordChars(num) {
     // get this input-group and find the closest input (where you have keyed up)
     var inputs = $(this).closest('.input-group').find(':input');
     // get your keyed up input field and focus to next.
-    inputs.eq( inputs.index(this)+ 1 ).focus();
+    inputs.eq( inputs.index(this)+ 1 ).focus().select();
   })
-}
-
-
-// get the input values and create unique combinations array
-function getUniqueInputArrays(){
-
-  // get number of elements in the inputDiv fields
-  var elementCount = document.getElementById('inputDiv').children.length;
-
-  // get number of word length of user
-  var charCount = $('input[name=options]:checked').val();
-
-  //create array with values
-  var inputArray = [];
-
-  //get get values from field ID's
-  for (k=0; k < elementCount; k++){
-
-    var InputValue = document.getElementById(k).value;
-
-    // check if all field are filled in
-    if (!InputValue) { alert('please fill in all character fields'); return; }
-
-    //push to array
-    inputArray.push(InputValue.toUpperCase());
-  }
-
-  var returnArray = [];
-  returnArray = uniqueArray(charCombinations(inputArray, charCount));
-
-  console.log("inputArray: ", inputArray);
-  console.log("unique input combination array: ", returnArray);
-
-  return returnArray;
-}
-
-//create combinations
-function charCombinations(elements, size) {
-    var result = [];
-
-    if (size === 0) {
-
-        result.push([]);
-    } else {
-
-        charCombinations(elements, size - 1).forEach(function (previousComb) {
-            elements.forEach(function (element) {
-                result.push([element].concat(previousComb));
-            });
-        });
-    }
-    return result;
-}
-
-// create an array with unique characters only
-function uniqueArray(fullArray) {
-
-  var uniqArray = [];
-
-  for (i=0; i < fullArray.length; i++){
-
-    fa = fullArray[i];
-
-    if (!(hasDuplicates(fa))) {
-
-      uniqArray.push(fa.join(""));
-    }
-  }
-  return uniqArray;
-}
-
-// check if array has duplicate characters
-function hasDuplicates(array) {
-
-    var unique = array.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
-
-    return unique.length !== array.length;
 }
 
 
@@ -197,79 +72,91 @@ function updateProgress(curIter, fullLength){
 }
 
 
-//check combination against dictionary file
-function libraryCheck() {
+// get the input values
+function getInputChars(){
 
-  //show progress bar
-  document.getElementById('progressDiv').style.display = 'block';
+  // get number of elements in the inputDiv fields
+  var elementCount = document.getElementById('inputDiv').children.length;
+
+  var inputStr = "";
+
+  //get get values from field ID's
+  for (k=0; k < elementCount; k++){
+
+    var InputValue = document.getElementById(k).value;
+
+    // check if all field are filled in
+    if (!InputValue) { alert('please fill in all character fields'); return; }
+
+    //push value to inputStr
+    inputStr += InputValue.toLowerCase();
+  }
+  return inputStr;
+}
+
+
+// check characters with library
+function checkWoord() {
+
+  //hide noResult element when it is shown
+  document.getElementById('noResult').style.display = 'none';
+  document.getElementById('outputDiv').style.display = 'none';
+
+  //URL variables
+  var HREF = window.location.href;
+  var lang = 'dutch';
+  var charSearch = getInputChars();
+  var wordLength = $('input[name=options]:checked').val();
 
   //create URL
-  var URL = window.location.href + "loadDic?lang=dutch";
+  var URL = HREF + "checkWoord?lang=" + lang + "&charSearch=" + charSearch + "&wordLength=" + wordLength;
 
   //load dictionary file
-  httpData(URL,'GET',"", function(libStr){
+  httpData(URL,'GET',"", function(res){
 
-    //convert lib string to array
-    libArray = JSON.parse(libStr);
+    var result = JSON.parse(res);
 
-    // get word combinations array
-    var inputUniqueArray = getUniqueInputArrays();
+    console.log("checkWoord response: ", res);
 
     //empty output table
     document.getElementById('outputTable').innerHTML = "";
     var table = document.getElementById('outputTable').innerHTML;
 
     // check if libraryArray exists
-    if (libArray.length > 0){
+    if (result.length < 1){
+      console.log("no results returned.");
+      document.getElementById('noResult').style.display = 'block';
+    } else {
 
-      console.log('Comparing..');
-      // for each unique word
-      for (i=0, tdCount = 0; i < inputUniqueArray.length; i++) {
+      console.log('results found');
+      var tdCount = 0;
+      // for each word found
+      for (var j=0; j < result.length; j++) {
 
-        //load progress bar
-        updateProgress(i,inputUniqueArray.length);
+        var word = result[j];
 
-        var ia = inputUniqueArray[i];
+        if (tdCount == 0) {
+          table += "<tr>";
+        }
 
-        // for each library word
-        for (var j=0; j < libArray.length; j++) {
+        table += "<td>" + word + "</td>";
 
-          var libEntry = libArray[j][0];
-
-          // check if input word is equal to library entry
-          if (ia == libEntry) {
-
-            if(libEntry) {
-
-              console.log("match found!",libEntry);
-              if (tdCount == 0) {
-                table += "<tr>";
-              }
-
-              table += "<td>" + libEntry + "</td>";
-
-              if (tdCount == 4) {
-                table += "</tr>";
-                tdCount = 0;
-                break;
-              }
-
-              tdCount++;
-              break;
-            }
-          }
+        if (tdCount == 4) {
+          table += "</tr>";
+          tdCount = 0;
+        } else {
+          tdCount++;
         }
       }
       document.getElementById('outputTable').innerHTML = table;
       document.getElementById('outputDiv').style.display = 'block';
-      console.log("Finished comparing.");
       document.getElementById('progressDiv').style.display = 'none';
-
-    } else {
-      alert("No library file was uploaded, or the file is empty!");
     }
   })
 }
+
+
+
 
 
 // Load when document is ready
@@ -278,15 +165,15 @@ $(document).ready(function() {
   //load on selection made at class wordLength
   $('#wordLength').change(function() {
 
-    //get value of selected options
-    charAvailableSelect($('input[name=options]:checked').val());
+    //get value of selected radio button
+    createCharAvailableRadio($('input[name=options]:checked').val());
   })
 
   //Load on section made at id numChar
   $('#numChar').change(function() {
 
     //get value of selected options
-    wordChars($('input[name=options2]:checked').val());
+    createCharFields($('input[name=options2]:checked').val());
   })
 
 })

@@ -1,7 +1,6 @@
 var express = require('express');
 
 var index = require('./routes/index');
-var loadDic = require('./routes/loadDic');
 var checkWoord = require('./routes/checkWoord');
 
 var app = express();
@@ -14,7 +13,6 @@ var app = express();
 app.use(express.static(__dirname + '/public'));
 
 // when url path includes /blah then go to blah route (./routes/blah)
-app.use('/loadDic', loadDic);
 app.use('/checkWoord', checkWoord);
 
 // catch 404 and forward to error handler
