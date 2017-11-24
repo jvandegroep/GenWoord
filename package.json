@@ -4,11 +4,12 @@
   "description": "GenWoord on NodeJS",
   "main": "app.js",
   "author": {
-    "name": "J",
-    "email": ""
+    "name": "Jacob van de Groep",
+    "email": "jaapgroep@hotmail.com"
   },
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "js-combinatorics": "^0.5.2"
   },
   "devDependencies": {
     "nodemon": "^1.12.1"

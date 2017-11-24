@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
+var Combinatorics = require('js-combinatorics');
 
 var charSearch = "";
 var wordLength = "";
@@ -68,22 +69,13 @@ router.get('/', function(req, res, next) {
     console.log("charLen: ", charLen);
 
     //create array for all combinations
+    tempArray = Combinatorics.combination(sortChars, wordLength).toArray();
+
     var combiArray = [];
+    tempArray.forEach(function(combi){
 
-    for (i=0; i < charLen; i++){
-
-      //remove(shift) the first element and add(push) it to the end
-      sortChars.push(sortChars.shift());
-      //create empty array
-      tempArr = [];
-
-      for (j=0; j < wordLength; j++) {
-        //add character to temporary array
-        tempArr.push(sortChars[j]);
-      }
-      //sort, join and push the collection chars to combiArray
-      combiArray.push(tempArr.sort().join(""));
-    }
+      combiArray.push(combi.join(""));
+    });
 
     console.log("combiArray: ",combiArray);
 
