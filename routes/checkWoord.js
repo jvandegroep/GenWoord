@@ -2,20 +2,20 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 
+var charSearch = "";
+var wordLength = "";
+
 /* GET checkWoord page */
 router.get('/', function(req, res, next) {
-
-  //res.write("nog niet klaar");
-  //res.end();
 
   //console logging
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
   console.log('original URL:', fullUrl);
   console.log('query:',req.query);
 
-  const charSearch = req.query.charSearch;
+  charSearch = req.query.charSearch;
   var lang = req.query.lang;
-  const wordLength = req.query.wordLength;
+  wordLength = req.query.wordLength;
 
 
   //check input
@@ -48,7 +48,7 @@ router.get('/', function(req, res, next) {
     dicTextFile.forEach(function(word){
 
       //split, sort and set case of word to upper
-      var sortedWord = word.toUpperCase().split("").sort().join("");
+      var sortedWord = word.split("").sort().join("");
 
       //sorted word not present in libraryIndex
       if (! libraryIndex[sortedWord]){
@@ -57,8 +57,7 @@ router.get('/', function(req, res, next) {
       }
 
       //push word to libraryIndex (sorted word as key)
-      libraryIndex[sortedWord]=[word.toUpperCase()];
-
+      libraryIndex[sortedWord].push(word);
     });
 
     //split and sort the incoming characters
@@ -73,30 +72,40 @@ router.get('/', function(req, res, next) {
 
     for (i=0; i < charLen; i++){
 
-      //remove the first element and add it to the end
+      //remove(shift) the first element and add(push) it to the end
       sortChars.push(sortChars.shift());
-
+      //create empty array
       tempArr = [];
 
       for (j=0; j < wordLength; j++) {
-
+        //add character to temporary array
         tempArr.push(sortChars[j]);
       }
-
+      //sort, join and push the collection chars to combiArray
       combiArray.push(tempArr.sort().join(""));
-
     }
 
     console.log("combiArray: ",combiArray);
 
+    //create result array
+    var result = [];
+    //compare combiArray items to libraryIndex
+    combiArray.forEach(function(combi){
 
+      if (libraryIndex[combi]){
 
-    // trow back the data that was read
-    res.send('library filetje');
+        console.log("found ",combi + " in index!");
+        libraryIndex[combi].forEach(function(sw){
+
+          result.push(sw);
+        })
+      }
+    })
+
+    // send back the result (array)
+    res.send(result);
     res.end();
-
   });
-
 });
 
 module.exports = router;

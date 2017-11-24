@@ -21,7 +21,7 @@
     <script src="./js/process.js"></script>
     <script src="./js/xhttp.js"></script>
     <link rel="stylesheet" type="text/css" href="./css/style.css">
-    <link rel="icon" href="./img/favicon.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="favicon.png" sizes="16x16" type="image/png">
 
   </head>
   <body>
@@ -91,19 +91,22 @@
             </div>
             <br>
             <br>
-            <button id="button" class="btn btn-secondary" type="button" onclick="libraryCheck()" name="button">Generate!</button>
+            <button id="button" class="btn btn-secondary" type="button" onclick="checkWoord()" name="button">Generate!</button>
           </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-12">
-          <br><br>
+          <br>
           <div class="progress" id="progressDiv">
             <div class="progress-bar progress-bar-striped active" role="progressbar"
             aria-valuemin="0" aria-valuemax="100" style="width:0%">
               0%
             </div>
+          </div>
+          <div id="noResult">
+            <h4>No results found, please try again!</h4>
           </div>
           <div id="outputDiv">
             <br>

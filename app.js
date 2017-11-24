@@ -1,16 +1,18 @@
 var express = require('express');
 
 var index = require('./routes/index');
-var loadDic = require('./routes/loadDic');
 var checkWoord = require('./routes/checkWoord');
 
 var app = express();
+
+// default view engine
+//app.engine('html', require('ejs').renderFile);
+//app.set('view engine', 'html');
 
 // go directly to ./public and finds index.html
 app.use(express.static(__dirname + '/public'));
 
 // when url path includes /blah then go to blah route (./routes/blah)
-app.use('/loadDic', loadDic);
 app.use('/checkWoord', checkWoord);
 
 // catch 404 and forward to error handler
@@ -28,7 +30,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.send('error');
 });
 
 module.exports = app;
