@@ -37,7 +37,7 @@ function checkWoord() {
   //load dictionary file
   httpData(URL,'GET',"", function(res){
 
-    console.log("checkWoord responsee: ", res);
+    console.log("checkWoord response: ", res);
   })
 }
 

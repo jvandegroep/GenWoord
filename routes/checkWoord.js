@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 
-//const charSearch = "";
-//const wordLength = "";
+var charSearch = "";
+var wordLength = "";
 
 /* GET checkWoord page */
 router.get('/', function(req, res, next) {
@@ -16,10 +16,10 @@ router.get('/', function(req, res, next) {
   console.log('original URL:', fullUrl);
   console.log('query:',req.query);
 
-  var charSearch = req.query.charSearch;
+  charSearch = req.query.charSearch;
   console.log("debug1 - charSearch: ", charSearch);
   var lang = req.query.lang;
-  var wordLength = req.query.wordLength;
+  wordLength = req.query.wordLength;
 
 
   //check input
@@ -93,8 +93,6 @@ router.get('/', function(req, res, next) {
     }
 
     console.log("combiArray: ",combiArray);
-
-
 
     // trow back the data that was read
     res.send('library filetje');
