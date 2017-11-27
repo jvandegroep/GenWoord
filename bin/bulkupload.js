@@ -1,13 +1,11 @@
 // Static variables
 var DBHOST = "192.168.178.2";
 var DBPORT = "5984";
-var DBNAME = "genwoorddb";
 var DESIGNNAME = "wordindexdutch";
 var VIEWNAME = "wordindexdutch";
 
 var fs = require('fs');
 var nano = require('nano')('http://' + DBHOST + ":" + DBPORT);
-var async = require('async');
 
 var db = "genwoorddb"
 var genwoorddb = nano.db.use('genwoorddb');

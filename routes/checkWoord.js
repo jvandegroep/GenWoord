@@ -3,8 +3,18 @@ var router = express.Router();
 var fs = require('fs');
 var Combinatorics = require('js-combinatorics');
 
+//Variables
 var charSearch = "";
 var wordLength = "";
+
+//NANO
+var DBHOST = "192.168.178.2";
+var DBPORT = "5984";
+var DESIGNNAME = "wordindexdutch";
+var VIEWNAME = "wordindexdutch";
+var nano = require('nano')('http://' + DBHOST + ":" + DBPORT);
+var db = "genwoorddb";
+var genwoorddb = nano.db.use('genwoorddb');
 
 /* GET checkWoord page */
 router.get('/', function(req, res, next) {
@@ -23,53 +33,20 @@ router.get('/', function(req, res, next) {
   if (lang == "" || charSearch == "" || wordLength == ""){
     res.send('Error: (part of) input qeury empty');
     res.end();
+    return;
   }
 
-  //check and assign language dictonary
-  var dicFile;
-  if (lang == 'dutch') {
-      dicFile = './bin/dics/dutch/OpenTaal-210G-basis-gekeurd.txt';
-  }
-
-  //load dictionary file
-  fs.readFile(dicFile, "utf8", function(err, data){
-    if(err) {
-      console.log('error loading dictonary file', dicFile);
-      res.send("error loading dictonary file");
-      res.end();
-    }
-
-    console.log('File',dicFile + ' loaded!');
-
-    // convert data to array
-    var dicTextFile = data.split(/\r\n|\n/);
-    var libraryIndex = {};
-
-    // do for each word in dicTextfile
-    dicTextFile.forEach(function(word){
-
-      //split, sort and set case of word to upper
-      var sortedWord = word.split("").sort().join("");
-
-      //sorted word not present in libraryIndex
-      if (! libraryIndex[sortedWord]){
-        //add to libraryIndex with empty array
-        libraryIndex[sortedWord]=[];
-      }
-
-      //push word to libraryIndex (sorted word as key)
-      libraryIndex[sortedWord].push(word);
-    });
+  else {
 
     //split and sort the incoming characters
-    var sortChars = charSearch.split("").sort(); //"abcdef"
+    var sortChars = charSearch.split("").sort(); //["a","b","c","d","e"]
     var charLen = sortChars.length;
 
     console.log("sortChars: ", sortChars);
     console.log("charLen: ", charLen);
 
     //create array for all combinations
-    tempArray = Combinatorics.combination(sortChars, wordLength).toArray();
+    var tempArray = Combinatorics.combination(sortChars, wordLength).toArray();
 
     var combiArray = [];
     tempArray.forEach(function(combi){
@@ -81,23 +58,34 @@ router.get('/', function(req, res, next) {
 
     //create result array
     var result = [];
-    //compare combiArray items to libraryIndex
-    combiArray.forEach(function(combi){
+    //compare combiArray items to the database
+    for (var i = 0; i < combiArray.length; i++) {
+      var sortedWord = combiArray[i];
 
-      if (libraryIndex[combi]){
+      genwoorddb.view(DESIGNNAME, VIEWNAME, {
+        'sortedword': sortedWord,
+        'include_docs': true
+      }, function(err, res) {
+        if (!err) {
+          res.rows.forEach(function(doc) {
+            result.push(doc.value)
+            console.log('word found:',doc.value + 'result:',result);
+            // send back the result (array)
+            res.send(result);
+            res.end();
+          })
+          if (!res) {
+            console.log('no word found.');
+          }
+        } else if (err) {
+          console.log(err);
+        }
+      })
+    }
 
-        console.log("found ",combi + " in index!");
-        libraryIndex[combi].forEach(function(sw){
 
-          result.push(sw);
-        });
-      }
-    });
+  }
 
-    // send back the result (array)
-    res.send(result);
-    res.end();
-  });
 });
 
 module.exports = router;
