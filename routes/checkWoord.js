@@ -36,7 +36,7 @@ router.get('/', function(req, res, next) {
     return;
   }
 
-  else {
+else {
 
     //split and sort the incoming characters
     var sortChars = charSearch.split("").sort(); //["a","b","c","d","e"]
@@ -56,36 +56,38 @@ router.get('/', function(req, res, next) {
 
     console.log("combiArray: ",combiArray);
 
-    //create result array
-    var result = [];
-    //compare combiArray items to the database
-    for (var i = 0; i < combiArray.length; i++) {
-      var sortedWord = combiArray[i];
-
-      genwoorddb.view(DESIGNNAME, VIEWNAME, {
-        'sortedword': sortedWord,
-        'include_docs': true
-      }, function(err, res) {
-        if (!err) {
-          res.rows.forEach(function(doc) {
-            result.push(doc.value)
-            console.log('word found:',doc.value + 'result:',result);
-            // send back the result (array)
-            res.send(result);
-            res.end();
-          })
-          if (!res) {
-            console.log('no word found.');
-          }
-        } else if (err) {
-          console.log(err);
-        }
-      })
-    }
-
+    getData(res, combiArray);
 
   }
-
 });
+
+//compare combiArray items to the database
+function getData(routerRes, combiArray){
+
+  genwoorddb.view(DESIGNNAME, VIEWNAME, {
+    'keys': combiArray
+  }, function(err, res) {
+    if (!err) {
+      var result = [];
+      res.rows.forEach(function(doc) {
+        result.push(doc.value);
+        console.log('word found:',doc.value);
+      });
+      if (!res) {
+        console.log('no word found.');
+        res.send("no word found.");
+      }
+      if(result){
+        // send back the result (array)
+        console.log('end result: ',result);
+        routerRes.send(result);
+      }
+    } else if (err) {
+      console.log(err);
+      routerRes.send(err);
+    }
+    routerRes.end();
+  });
+}
 
 module.exports = router;
