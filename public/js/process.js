@@ -55,23 +55,6 @@ function createCharFields(num) {
   });
 }
 
-
-//show progress bar
-function updateProgress(curIter, fullLength){
-
-  var percentDone = Math.round((curIter / fullLength)*100);
-
-  //set progress bar
-  progBar = document.getElementsByClassName('progress-bar')[0];
-
-  //set style width
-  progBar.style = "width:" + percentDone + "%";
-
-  //set innerHTML
-  progBar.innerHTML = "              " + percentDone + "%            ";
-}
-
-
 // get the input values
 function getInputChars(){
 
@@ -150,7 +133,6 @@ function checkWoord() {
       }
       document.getElementById('outputTable').innerHTML = table;
       document.getElementById('outputDiv').style.display = 'block';
-      document.getElementById('progressDiv').style.display = 'none';
     }
   });
 }
