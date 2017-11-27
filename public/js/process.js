@@ -128,7 +128,7 @@ function checkWoord() {
       document.getElementById('noResult').style.display = 'block';
     } else {
 
-      console.log('results found');
+      console.log(result.length + ' results found.');
       var tdCount = 0;
       // for each word found
       for (var j=0; j < result.length; j++) {

@@ -43,7 +43,6 @@ else {
     var charLen = sortChars.length;
 
     console.log("sortChars: ", sortChars);
-    console.log("charLen: ", charLen);
 
     //create array for all combinations
     var tempArray = Combinatorics.combination(sortChars, wordLength).toArray();

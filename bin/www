@@ -6,13 +6,13 @@
 
 var app = require('../app');
 var http = require('http');
-var debug = require('debug')
+var debug = require('debug');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = '80';
+var port = '8080';
 app.set('port', port);
 
 /**
