@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var fs = require('fs');
 var Combinatorics = require('js-combinatorics');
 
 //Variables
@@ -13,11 +12,10 @@ var DBPORT = "5984";
 var DESIGNNAME = "wordindexdutch";
 var VIEWNAME = "wordindexdutch";
 var nano = require('nano')('http://' + DBHOST + ":" + DBPORT);
-var db = "genwoorddb";
 var genwoorddb = nano.db.use('genwoorddb');
 
 /* GET checkWoord page */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
 
   //console logging
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
@@ -40,7 +38,6 @@ else {
 
     //split and sort the incoming characters
     var sortChars = charSearch.split("").sort(); //["a","b","c","d","e"]
-    var charLen = sortChars.length;
 
     console.log("sortChars: ", sortChars);
 
