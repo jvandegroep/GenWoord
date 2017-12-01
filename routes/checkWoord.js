@@ -7,7 +7,7 @@ var charSearch = "";
 var wordLength = "";
 
 //NANO
-var DBHOST = "192.168.178.2";
+var DBHOST = "127.0.0.1";
 var DBPORT = "5984";
 var DESIGNNAME = "wordindexdutch";
 var VIEWNAME = "sortedword";
