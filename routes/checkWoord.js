@@ -10,7 +10,7 @@ var wordLength = "";
 var DBHOST = "192.168.178.2";
 var DBPORT = "5984";
 var DESIGNNAME = "wordindexdutch";
-var VIEWNAME = "wordindexdutch";
+var VIEWNAME = "sortedword";
 var nano = require('nano')('http://' + DBHOST + ":" + DBPORT);
 var genwoorddb = nano.db.use('genwoorddb');
 
